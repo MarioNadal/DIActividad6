@@ -6,12 +6,14 @@ function Formulario() {
     const [enteredEmail, setEnteredEmail] = useState(' ');
     const [enteredSexo, setEnteredSexo] = useState(' ');
     const [enteredMensaje, setEnteredMensaje] = useState('');
+    const [enteredTerminos, setEnteredTerminos] = useState('');
 
     const [nombreIncorrecto, setNombreIncorrecto] = useState("");
     const [apellidosIncorrecto, setApellidosIncorrecto] = useState("");
     const [emailIncorrecto, setEmailIncorrecto] = useState("");
     const [sexoIncorrecto, setSexoIncorrecto] = useState("");
     const [mensajeIncorrecto, setMensajeIncorrecto] = useState("");
+    const [terminosIncorrecto, setTerminosIncorrecto] = useState("");
 
 
 
@@ -29,6 +31,9 @@ function Formulario() {
     }
     function updateMensaje(event){
         setEnteredMensaje(event.target.value);
+    }
+    function updateTerminos(event){
+        setEnteredTerminos(event.target.value);
     }
     
     const validateName = useCallback(
@@ -82,6 +87,17 @@ function Formulario() {
         },
         [enteredMensaje]
     )
+    const validateTerminos = useCallback(
+        function() {
+            let checkboxTerminos = document.getElementById("checkboxTerminos");
+            if(checkboxTerminos.checked === false){
+                setTerminosIncorrecto(<p>Tienes que aceptar los terminos y condiciones</p>)
+            }else{
+                setTerminosIncorrecto(<span></span>)
+            }
+        },
+        [enteredTerminos]
+    )
 
     useEffect(
         function(){
@@ -112,6 +128,12 @@ function Formulario() {
             validateMensaje();
         },
         [validateMensaje]
+    );
+    useEffect(
+        function(){
+            validateTerminos();
+        },
+        [validateTerminos]
     );
 
 
@@ -147,6 +169,10 @@ function Formulario() {
                 <label>Mensaje</label>
                 <input trpe="mensaje" onChange={updateMensaje}/>
                 {mensajeIncorrecto}
+                <p></p>
+                <label>Acepto los Términos y Condiciones</label>
+                <input type="checkbox" id="checkboxTerminos" onChange={updateTerminos}/>
+                {terminosIncorrecto}
             </div>
             <button type = 'submit'>Click to submit</button>
         </form>
