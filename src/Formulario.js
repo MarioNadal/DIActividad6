@@ -78,6 +78,8 @@ function Formulario() {
                 if(enteredMensaje.length>500){
                     setMensajeIncorrecto(<p>Mensaje demasiado largo</p>)
                     setCssClassMensaje("input-invalid")
+                }else{
+                    setMensajeIncorrecto(<span>Cáracteres restantes: {500-enteredMensaje.length}</span>)
                 }
                 if(checkboxTerminos.checked === false){
                     setTerminosIncorrecto(<p>Tienes que aceptar los terminos y condiciones</p>)
@@ -106,6 +108,7 @@ function Formulario() {
     return(
         <form onSubmit = {handleSubmit}>
             <div>
+            <h1>Formulario DAM2</h1>
                 <label>Nombre </label>
                 <input className={cssClassName} type="name" onChange={updateName} />
                 {nombreIncorrecto}
