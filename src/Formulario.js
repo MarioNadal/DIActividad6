@@ -7,12 +7,16 @@ function Formulario() {
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredSexo, setEnteredSexo] = useState('');
     const [enteredMensaje, setEnteredMensaje] = useState('');
+    const [enteredTerminos, setEnteredTerminos] = useState('');
+
 
     const [nombreIncorrecto, setNombreIncorrecto] = useState("");
     const [apellidosIncorrecto, setApellidosIncorrecto] = useState("");
     const [emailIncorrecto, setEmailIncorrecto] = useState("");
     const [sexoIncorrecto, setSexoIncorrecto] = useState("");
     const [mensajeIncorrecto, setMensajeIncorrecto] = useState("");
+    const [terminosIncorrecto, setTerminosIncorrecto] = useState("");
+
 
     const [cssClass, setCssClass] = useState("input-valid");
     const [cssClassName, setCssClassName] = useState("input-valid");
@@ -20,6 +24,7 @@ function Formulario() {
     const [cssClassEmail, setCssClassEmail] = useState("input-valid");
     const [cssClassSexo, setCssClassSexo] = useState("input-valid");
     const [cssClassMensaje, setCssClassMensaje] = useState("input-valid");
+    const [cssClassTerminos, setCssClassTerminos] = useState("input-valid");
 
     function updateName(event){
         setEnteredName(event.target.value);
@@ -36,9 +41,13 @@ function Formulario() {
     function updateMensaje(event){
         setEnteredMensaje(event.target.value);
     }
+    function updateTerminos(event){
+        setEnteredTerminos(event.target.value);
+    }
     
     const validateTodo = useCallback(
         function() {
+            let checkboxTerminos = document.getElementById("checkboxTerminos");
             if(enteredName===""||enteredName.length>10){
                 setNombreIncorrecto(<p>El nombre no es válido, No debe estar vacio ni tener más de 10 carácteres</p>)
                 setCssClassName("input-invalid")
@@ -72,8 +81,14 @@ function Formulario() {
                 setCssClassMensaje("input-invalid")
             }else{
                 setMensajeIncorrecto(<span>Cáracteres restantes: {500-enteredMensaje.length}</span>)
+            }if(checkboxTerminos.checked === false){
+                setTerminosIncorrecto(<p>Tienes que aceptar los terminos y condiciones</p>)
+                setCssClassTerminos("input-invalid")
+            }else{
+                setTerminosIncorrecto(<span></span>)
+                setCssClassTerminos("input-valid")
             }
-            if(enteredName===""||enteredName.length>10||enteredApellidos===""||enteredApellidos.length>20||!enteredEmail.includes("@")||enteredEmail.length>20||enteredSexo===""||enteredMensaje.length>500){
+            if(enteredName===""||enteredName.length>10||enteredApellidos===""||enteredApellidos.length>20||!enteredEmail.includes("@")||enteredEmail.length>20||enteredSexo===""||enteredMensaje.length>500||checkboxTerminos.checked === false){
                 setCssClass("input-invalid")
                 document.getElementById('buttonEnviar').disabled = true;
 
@@ -82,7 +97,7 @@ function Formulario() {
                 document.getElementById('buttonEnviar').disabled = false;
             }
         },
-        [enteredName,enteredApellidos,enteredEmail,enteredSexo,enteredMensaje]
+        [enteredName,enteredApellidos,enteredEmail,enteredSexo,enteredMensaje, enteredTerminos]
     )
 
 
@@ -95,11 +110,10 @@ function Formulario() {
 
     const handleSubmit = (e) => {
         alert("Formulario enviado correctamente")
-        e.preventDefault();
     }
 
     return(
-        <form onSubmit = {handleSubmit}>
+        <form className="form">
             <div>
             <h1>Formulario DAM2</h1>
                 <label>Nombre </label>
@@ -128,10 +142,11 @@ function Formulario() {
                 {mensajeIncorrecto}
                 <p></p>
                 <label>Acepto los Términos y Condiciones </label>
-                <input  type="checkbox" id="checkboxTerminos"/>
+                <input className={cssClassTerminos} type="checkbox" id="checkboxTerminos" onChange={updateTerminos}/>
+                {terminosIncorrecto}
             </div>
             <p></p>
-            <button className={cssClass} type = 'submit' id="buttonEnviar">Click to submit</button>
+            <button className={cssClass} type = 'submit' id="buttonEnviar" onClick={handleSubmit}>Click to submit</button>
         </form>
     );
 }
