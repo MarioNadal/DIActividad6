@@ -4,8 +4,8 @@ import './classes.css'
 function Formulario() {
     const [enteredName, setEnteredName] = useState('');
     const [enteredApellidos, setEnteredApellidos] = useState('');
-    const [enteredEmail, setEnteredEmail] = useState(' ');
-    const [enteredSexo, setEnteredSexo] = useState(' ');
+    const [enteredEmail, setEnteredEmail] = useState('');
+    const [enteredSexo, setEnteredSexo] = useState('');
     const [enteredMensaje, setEnteredMensaje] = useState('');
 
     const [nombreIncorrecto, setNombreIncorrecto] = useState("");
@@ -63,6 +63,9 @@ function Formulario() {
             if(enteredSexo===""){
                 setSexoIncorrecto(<p>Seleccione un sexo</p>)
                 setCssClassSexo("input-invalid")
+            }else{
+                setSexoIncorrecto(<span></span>)
+                setCssClassSexo("input-valid")
             }
             if(enteredMensaje.length>500){
                 setMensajeIncorrecto(<p>Mensaje demasiado largo</p>)
@@ -72,8 +75,11 @@ function Formulario() {
             }
             if(enteredName===""||enteredName.length>10||enteredApellidos===""||enteredApellidos.length>20||!enteredEmail.includes("@")||enteredEmail.length>20||enteredSexo===""||enteredMensaje.length>500){
                 setCssClass("input-invalid")
+                document.getElementById('buttonEnviar').disabled = true;
+
             }else{
                 setCssClass("input-valid")
+                document.getElementById('buttonEnviar').disabled = false;
             }
         },
         [enteredName,enteredApellidos,enteredEmail,enteredSexo,enteredMensaje]
@@ -88,6 +94,7 @@ function Formulario() {
     );
 
     const handleSubmit = (e) => {
+        alert("Formulario enviado correctamente")
         e.preventDefault();
     }
 
@@ -109,7 +116,8 @@ function Formulario() {
                 <p></p>
                 <label>Sexo </label>
                 <select className={cssClassSexo} type="sexo" onChange={updateSexo}>
-                    <option defaultValue="No binario">No binario</option>
+                    <option defaultValue=""></option>
+                    <option value="No binario">No binario</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                 </select>
@@ -122,7 +130,8 @@ function Formulario() {
                 <label>Acepto los Términos y Condiciones </label>
                 <input  type="checkbox" id="checkboxTerminos"/>
             </div>
-            <button className={cssClass} type = 'submit'>Click to submit</button>
+            <p></p>
+            <button className={cssClass} type = 'submit' id="buttonEnviar">Click to submit</button>
         </form>
     );
 }
